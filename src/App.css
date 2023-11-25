@@ -35,17 +35,66 @@
 .sidebar {
   width: 280px;
   height: 93.75vh;
+  position: sticky;
+  top:0;
 }
 .profile-content {
   display: flex;
   flex-direction: row;
+  min-height: 80vh;
+  background-color: #2b2a33;
 }
-#accountinfo{
+.accountinfo{
   box-sizing: border-box;
   padding: 2rem;
   background-color: #2b2a33;
   width: 100%;
+  min-height: 80vh;
 }
 .active {
   background-color: yellow;
+}
+.addrecipe{
+  font-size: 50px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+}
+.addrecipe-icon{
+  font-size: 50px;
+}
+.recipecard {
+  width: 350px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 25px;
+  gap: 3rem;
+}
+.hr {
+  width: 17.5rem;
+  height: 2px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  border-color: white;
+  background-color: white;
+  color: white;
+  margin-bottom: 2rem;
+}
+.dummy {
+  width: 280px;
+}
+#accountinfo{
+  margin-bottom: 3rem;
+}
+#favorites{
+  margin-bottom: 3rem;
+}
+#myrecipes{
+  margin-bottom: 3rem;
 }

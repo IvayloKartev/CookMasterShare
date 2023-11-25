@@ -6,6 +6,9 @@ import Home from './Components/Home';
 import LoginPage from './LoginPage';
 import {useEffect, useState} from 'react';
 import AccountPage from './Components/AccountPage';
+import { getFirestore } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore"; 
+import { collection, addDoc } from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyD99Ps3ewiDL7WTtaCJaDqBmo5dmSRjuCo",
@@ -19,12 +22,27 @@ const firebaseConfig = {
 
 let app = initializeApp(firebaseConfig);
 let auth = getAuth(app);
+let db = getFirestore(app);
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [user] = useAuthState(auth);
   const [altName, setAltName] = useState('');
   const [showAccount, setShowAccount] = useState(false);
+
+  async function addToDataBase(tname, desc, tcontent){
+    try {
+      const docRef = await addDoc(collection(db, "recipes"), {
+        name: tname,
+        description: desc,
+        content: tcontent,
+        author: user.displayName ? user.displayName : nameFromEmail(user.email)
+      });
+      console.log("Document written with ID: ", tname);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
 
   function changeShowAccount(){
     setShowAccount(!showAccount);
@@ -73,7 +91,7 @@ function App() {
     return <LoginPage altName={changeAltName} signInWithGoogle={signInWithGoogle} email={changeEmailAndPass} signInWithEmail={signInWithEmail} showLogin={setShowLoginFalse} signInWithFacebook={signInWithFacebook} createAccount={createAccount}/>
   }
   if(showAccount) {
-    return <AccountPage type={user.displayName ? user.displayName : nameFromEmail(user.email)} name={user.displayName ? user.displayName : nameFromEmail(user.email)} email={user.email}/>
+    return <AccountPage type={user.displayName ? user.displayName : nameFromEmail(user.email)} name={user.displayName ? user.displayName : nameFromEmail(user.email)} email={user.email} signOut={signOut} unshowAccount={changeShowAccount} addToDB={addToDataBase}/>
   }
   return (
     <>

@@ -6,14 +6,22 @@ import Header from './Header';
 import {useEffect, useState} from 'react';
 import SidePanel from './SidePanel';
 import AccountInfo from './AccountInfo';
+import Favourites from './Favourites';
+import NewRecipe from './AddNewRecipe';
+import MyRecipes from './MyRecipes';
 
-export default function AccountPage({type, name, email, password}){
+export default function AccountPage({type, name, email, password, signOut, unshowAccount, addToDB}){
     return (
         <>
             <Header loginBtn={type}/>
             <main className="profile-content">
                 <SidePanel name={name}/>
-                <AccountInfo name={name} email={email}/>
+                <section className='accountinfo'>
+                    <AccountInfo name={name} email={email} signOut={signOut} unshowAccount={unshowAccount}/>
+                    <Favourites cards={null}/>
+                    <MyRecipes cards={null}/>
+                    <NewRecipe addToDB={addToDB}/>                   
+                </section>
             </main>
         </>
     )
