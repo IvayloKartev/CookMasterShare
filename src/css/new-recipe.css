@@ -1,0 +1,21 @@
+.createrecipe{
+    color: white;
+}
+.fileupload{
+    width: 30vw;
+    height: 32vw;
+    background-color: lightgrey;
+    border-radius: 20px;
+}
+.upload{
+    display: flex;
+    gap: 3rem;
+}
+.fa-file-upload {
+    font-size: 100px;
+}
+.namedesc {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

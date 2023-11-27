@@ -6,9 +6,11 @@ import Home from './Components/Home';
 import LoginPage from './LoginPage';
 import {useEffect, useState} from 'react';
 import AccountPage from './Components/AccountPage';
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, orderBy } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore"; 
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import {getStorage, ref, uploadBytes} from 'firebase/storage';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyD99Ps3ewiDL7WTtaCJaDqBmo5dmSRjuCo",
@@ -20,23 +22,34 @@ const firebaseConfig = {
   measurementId: "G-11NKHJEW95"
 };
 
-let app = initializeApp(firebaseConfig);
+export let app = initializeApp(firebaseConfig);
 let auth = getAuth(app);
 let db = getFirestore(app);
+let recipes = await getDocs(collection(db, "recipes"));
+export const storage = getStorage(app);
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [user] = useAuthState(auth);
   const [altName, setAltName] = useState('');
   const [showAccount, setShowAccount] = useState(false);
+  let recipesToShow = [];
 
-  async function addToDataBase(tname, desc, tcontent){
+      recipes.forEach((doc) => {
+      recipesToShow.push(doc.data());
+      })
+      recipesToShow.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
+
+  async function addToDataBase(tname, desc, tcontent, timage, tdate){
     try {
       const docRef = await addDoc(collection(db, "recipes"), {
         name: tname,
         description: desc,
         content: tcontent,
-        author: user.displayName ? user.displayName : nameFromEmail(user.email)
+        image: timage,
+        author: user.displayName ? user.displayName : nameFromEmail(user.email),
+        likes: 0,
+        date: tdate
       });
       console.log("Document written with ID: ", tname);
     } catch (e) {
@@ -91,11 +104,11 @@ function App() {
     return <LoginPage altName={changeAltName} signInWithGoogle={signInWithGoogle} email={changeEmailAndPass} signInWithEmail={signInWithEmail} showLogin={setShowLoginFalse} signInWithFacebook={signInWithFacebook} createAccount={createAccount}/>
   }
   if(showAccount) {
-    return <AccountPage type={user.displayName ? user.displayName : nameFromEmail(user.email)} name={user.displayName ? user.displayName : nameFromEmail(user.email)} email={user.email} signOut={signOut} unshowAccount={changeShowAccount} addToDB={addToDataBase}/>
+    return <AccountPage type={user.displayName ? user.displayName : nameFromEmail(user.email)} name={user.displayName ? user.displayName : nameFromEmail(user.email)} email={user.email} signOut={signOut} unshowAccount={changeShowAccount} addToDB={addToDataBase} isAccount={changeShowAccount}/>
   }
   return (
     <>
-      {user ? <Home type={user.displayName ? user.displayName : nameFromEmail(user.email)} btnEvent={changeShowAccount}/> : <Home type="Login" btnEvent={() => setShowLogin(true)}/>}
+      {user ? <Home type={user.displayName ? user.displayName : nameFromEmail(user.email)} btnEvent={changeShowAccount} recipes={recipesToShow}/> : <Home type="Login" btnEvent={() => setShowLogin(true)} recipes={recipesToShow}/>}
     </>
   )
 }

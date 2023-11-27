@@ -1,0 +1,57 @@
+.active-card {
+    width: 25vw; /* 25vw ~ 500px => 1vw = 20px */
+    height: 30vw;
+    background-color: #42414d;
+    color: white;
+    transition: 1s;
+}
+.unactive-card {
+    width: 20.35vw;
+    height: 25.71vw;
+    filter: blur(3px);
+    background-color: #42414d;
+    color: white;
+    transition: 1s;
+}
+.recipe-slider {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    height: 80vh;
+    background-color: #2b2a33;
+}
+.slide-back {
+    color: white;
+    border-radius: 50%;
+    background-color: #212529;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5rem;
+    z-index: 99;
+}
+.slide-forth {
+    color: white;
+    border-radius: 50%;
+    background-color: #212529;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5rem;
+    z-index: 99;
+}
+.slider-title{
+    background-color: #2b2a33;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    height: 13.7vh;
+    font-size: 60px;
+}

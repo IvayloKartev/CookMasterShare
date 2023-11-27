@@ -10,10 +10,10 @@ import Favourites from './Favourites';
 import NewRecipe from './AddNewRecipe';
 import MyRecipes from './MyRecipes';
 
-export default function AccountPage({type, name, email, password, signOut, unshowAccount, addToDB}){
+export default function AccountPage({type, name, email, password, signOut, unshowAccount, addToDB, isAccount}){
     return (
         <>
-            <Header loginBtn={type}/>
+            <Header loginBtn={type} isLogin={isAccount}/>
             <main className="profile-content">
                 <SidePanel name={name}/>
                 <section className='accountinfo'>
